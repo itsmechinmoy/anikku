@@ -2375,9 +2375,7 @@ class MangaScreenModel(
                     .distinctUntilChanged()
                     .collectLatest { tracks ->
                         val hasTrack = tracks.any { (it.trackerId == TrackerManager.ANILIST || it.trackerId == TrackerManager.MYANIMELIST) && it.remoteId > 0 }
-                        if (hasTrack) {
-                            aniZipMetaMap.value = enrichEpisodesWithAniZip.await(manga.id)
-                        }
+                        aniZipMetaMap.value = if (hasTrack) enrichEpisodesWithAniZip.await(manga.id) else emptyMap()
                     }
             }
         }
